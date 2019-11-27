@@ -1,14 +1,9 @@
 package com.gun.dto;
-// Generated 2017-6-1 18:10:41 by Hibernate Tools 4.0.1.Final
 
 import java.sql.Timestamp;
 
 public class MagazineFormDTO{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	public static enum ATTRIBUTE {
 	    ID("id"),
 	    MAGAZINE_NAME("magazineName"),

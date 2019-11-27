@@ -2,7 +2,7 @@ package com.gun.utility;
 
 public interface GUNConstants {
 
-	public static final String URI					= "http://192.168.93.31:8080/gun-web";
+	public static final String URI					= "http://127.0.0.1:8080/gun-web";
 	public static final String USER_ID 				= "id";
 	public static final String USER_ACCOUNT 		= "userId";
 	public static final String USER_NAME 			= "userName";

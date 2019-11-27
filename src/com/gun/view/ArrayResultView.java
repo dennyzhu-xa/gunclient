@@ -61,40 +61,6 @@ public class ArrayResultView extends JFrame {
         
         JScrollPane scp = new JScrollPane();
         scp.setPreferredSize(new Dimension(593,300));
-//        JPanel scPanel = new JPanel(new GridLayout(50,1));
-//        
-//        
-//        
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
-//        scPanel.add(new JLabel("111111"));
         TestPanel scPanel = new TestPanel();
         scp.setViewportView(scPanel);
         scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

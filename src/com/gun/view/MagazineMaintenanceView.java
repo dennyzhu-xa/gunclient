@@ -35,7 +35,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.ClientProtocolException;
 
-import com.gun.dto.EquipmentFormDTO;
 import com.gun.dto.MagazineFormDTO;
 import com.gun.utility.GUNConstants;
 import com.gun.utility.HttpUtility;

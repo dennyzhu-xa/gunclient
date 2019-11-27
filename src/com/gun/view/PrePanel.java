@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,6 +42,7 @@ public class PrePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private static final Log LOGGER = LogFactory.getLog(PrePanel.class);
+	DecimalFormat df = new DecimalFormat("0.00");
 	List<OilLevelDTO> oilLevelDTOList = null;
 	
 	private JointFormDTO jointFormDto;
@@ -263,65 +265,9 @@ public class PrePanel extends JPanel {
 			}
 		}
 	    
-//	    this.orderOilLeveles();
-//	    this.setBounds(0, 0, w/3, h+20);
 	    if(oilLevelDTOList == null || oilLevelDTOList.size() < 1) return;
-	    /*int y = 0;
-	    double start = 0;
-	    double end = 0;
-	    int height = 0;
-	    JLabel[] labels = new JLabel[oilLevelDTOList.size() * 2-1];
-
-	    for(int i=0;i<oilLevelDTOList.size();i++){
-	    	start = oilLevelDTOList.get(i).getStartLevel();
-	    	end = oilLevelDTOList.get(i).getEndLevel();
-	    	height = (int) (end - start);
-	    	labels[i*2] = new JLabel(String.valueOf(height));
-	    	labels[i*2].setBackground(Color.BLACK);
-	    	labels[i*2].setForeground(Color.WHITE);
-	    	labels[i*2].setBounds(0, y, w/3, height);
-	    	labels[i*2].setBorder(board);
-	    	labels[i*2].setOpaque(true);
-	    	this.add(labels[i*2]);
-	    	labels[i*2].setVisible(true);
-	    	
-	    	if(i < oilLevelDTOList.size()-1){
-	    		y += height;
-	    		height = (int) (oilLevelDTOList.get(i+1).getStartLevel() - oilLevelDTOList.get(i).getEndLevel());
-	    		labels[i*2 + 1] = new JLabel(String.valueOf(height));
-	    		labels[i*2 + 1].setBackground(Color.WHITE);
-	    		labels[i*2 + 1].setForeground(Color.BLACK);
-	    		labels[i*2 + 1].setBounds(0,y,w/3,height);
-	    		labels[i*2 + 1].setBorder(board);
-	    		labels[i*2 + 1].setOpaque(true);
-	    		this.add(labels[i*2 + 1]);
-	    		labels[i*2 + 1].setVisible(true);
-	    		y += height;
-	    	}
-	    }
-		JLabel label = new JLabel("test");
-		label.setBackground(Color.DARK_GRAY);
-		label.setBounds(0, 1550, w/3, 20);
-		this.add(label);*/
-//	    this.updateUI();
-	   /* try {
-	    	File file = new File("//Users//apple//Desktop//new.png");
-	    	image = ImageIO.read(file);
-	    	image2 = ImageIO.read(new File("//Users//apple//Desktop//bck.jpg"));
-	    } catch (Exception ex) {
-	      ex.printStackTrace(System.err);
-	    }
-	    JLabel jl1 = new JLabel(new ImageIcon(image.getScaledInstance(w/2, h, Image.SCALE_SMOOTH)));
-	    jl1.setLayout(null);
-	    jl1.setBounds(0, 0, w/2, h);
-	    this.add(jl1);
-	    JLabel jl2 = new JLabel(new ImageIcon(image2.getScaledInstance(w/2, h, Image.SCALE_SMOOTH)));
-	    jl2.setLayout(null);
-	    jl2.setBounds(0,h,w/2,h);
-	    this.add(jl2);*/
 	    arrData();
 	    
-//	    this.setBounds(0, 0, 400, (int)(100* (arrGunList.get(arrGunList.size()-1).getToDeep() - arrGunList.get(0).getFromDeep())));
 	    // 不加这一句滚动条不出来
 	    this.setPreferredSize(new Dimension(400,(int)(100* (arrGunList.get(arrGunList.size()-1).getToDeep() - arrGunList.get(0).getFromDeep()))));
 	}
@@ -366,9 +312,9 @@ public class PrePanel extends JPanel {
 					arrgun = new ArrGun();
 					arrgun.setSequence(sp++);
 					arrgun.setEquipmentId(equipDTOList.get(m).getId());
-					arrgun.setFromDeep(totalLevels.get(0).getStartLevel()-startMore);
+					arrgun.setFromDeep(Double.valueOf(df.format(totalLevels.get(0).getStartLevel()-startMore)));
 					arrgun.setLength(equipDTOList.get(m).getLength());
-					arrgun.setToDeep(arrgun.getFromDeep() + arrgun.getLength());
+					arrgun.setToDeep(Double.valueOf(df.format(arrgun.getFromDeep() + arrgun.getLength())));
 					if(deep >= equipDTOList.get(m).getLength()){
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 					} else {
@@ -381,9 +327,9 @@ public class PrePanel extends JPanel {
 					arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 					arrGunConnect.setSequence(sp++);
 					arrGunConnect.setEquipmentId(jointFormDto.getId());
-					arrGunConnect.setFromDeep(arrgun.getToDeep());
+					arrGunConnect.setFromDeep(Double.valueOf(df.format(arrgun.getToDeep())));
 					arrGunConnect.setLength(jointLength);
-					arrGunConnect.setToDeep(arrgun.getToDeep() + jointLength);
+					arrGunConnect.setToDeep(Double.valueOf(df.format(arrgun.getToDeep() + jointLength)));
 					arrGunList.add(arrGunConnect);
 					lastEquipDeep = arrgun.getToDeep() + jointLength;
 					flag = true;
@@ -399,9 +345,9 @@ public class PrePanel extends JPanel {
 				arrgun = new ArrGun();
 				arrgun.setSequence(sp++);
 				arrgun.setEquipmentId(equipDTOList.get(0).getId());
-				arrgun.setFromDeep(totalLevels.get(0).getStartLevel()-startMore);
+				arrgun.setFromDeep(Double.valueOf(df.format(totalLevels.get(0).getStartLevel()-startMore)));
 				arrgun.setLength(equipDTOList.get(0).getLength());
-				arrgun.setToDeep(arrgun.getFromDeep() + arrgun.getLength());
+				arrgun.setToDeep(Double.valueOf(df.format(arrgun.getFromDeep() + arrgun.getLength())));
 				arrgun.setType(GUNConstants.ARR_GUN_FULL);
 				arrGunList.add(arrgun);
 				arrGunMap.put(p++, arrgun);
@@ -410,10 +356,10 @@ public class PrePanel extends JPanel {
 				arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 				arrGunConnect.setSequence(sp++);
 				arrGunConnect.setEquipmentId(jointFormDto.getId());
-				arrGunConnect.setFromDeep(arrgun.getToDeep());
+				arrGunConnect.setFromDeep(Double.valueOf(df.format(arrgun.getToDeep())));
 				arrGunConnect.setLength(jointLength);
 				lastEquipDeep = arrgun.getToDeep() + jointLength;
-				arrGunConnect.setToDeep(lastEquipDeep);
+				arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 				arrGunList.add(arrGunConnect);
 			} else {
 				flag = false; //flag归位
@@ -437,10 +383,10 @@ public class PrePanel extends JPanel {
 								arrgun = new ArrGun();
 								arrgun.setSequence(sp++);
 								arrgun.setEquipmentId(equipDTOList.get(0).getId());
-								arrgun.setFromDeep(lastEquipDeep);
+								arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setLength(equipDTOList.get(0).getLength());
 								lastEquipDeep += arrgun.getLength() + endMore; 
-								arrgun.setToDeep(lastEquipDeep);
+								arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setType(GUNConstants.ARR_GUN_FULL);
 								arrGunList.add(arrgun);
 								arrGunMap.put(p++,arrgun);
@@ -450,19 +396,19 @@ public class PrePanel extends JPanel {
 								arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 								arrGunConnect.setSequence(sp++);
 								arrGunConnect.setEquipmentId(jointFormDto.getId());
-								arrGunConnect.setFromDeep(lastEquipDeep);
+								arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunConnect.setLength(jointLength);
 								lastEquipDeep += jointLength;
-								arrGunConnect.setToDeep(lastEquipDeep);
+								arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunList.add(arrGunConnect);
 							}
 							arrgun = new ArrGun();
 							arrgun.setSequence(sp++);
 							arrgun.setEquipmentId(equipDTOList.get(n).getId());
-							arrgun.setFromDeep(lastEquipDeep);
+							arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrgun.setLength(equipDTOList.get(n).getLength());
 							lastEquipDeep += equipDTOList.get(n).getLength();
-							arrgun.setToDeep(lastEquipDeep);
+							arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrgun.setType(GUNConstants.ARR_GUN_FULL);
 							arrGunList.add(arrgun);
 							arrGunMap.put(p++, arrgun);
@@ -471,19 +417,19 @@ public class PrePanel extends JPanel {
 							arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 							arrGunConnect.setSequence(sp++);
 							arrGunConnect.setEquipmentId(jointFormDto.getId());
-							arrGunConnect.setFromDeep(lastEquipDeep);
+							arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrGunConnect.setLength(jointLength);
 							lastEquipDeep += jointLength;
-							arrGunConnect.setToDeep(lastEquipDeep);
+							arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrGunList.add(arrGunConnect);
 							
 							arrgun = new ArrGun();
 							arrgun.setSequence(sp++);
 							arrgun.setEquipmentId(equipDTOList.get(m).getId());
-							arrgun.setFromDeep(lastEquipDeep);
+							arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrgun.setLength(equipDTOList.get(m).getLength());
 							lastEquipDeep += equipDTOList.get(m).getLength();
-							arrgun.setToDeep(lastEquipDeep);
+							arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 							if(g==(y+equipDTOList.get(0).getSingleBlindArea()-PER_MODIFY_LENGTH)){
 								arrgun.setType(GUNConstants.ARR_GUN_FULL);
 							} else {
@@ -496,10 +442,10 @@ public class PrePanel extends JPanel {
 							arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 							arrGunConnect.setSequence(sp++);
 							arrGunConnect.setEquipmentId(jointFormDto.getId());
-							arrGunConnect.setFromDeep(lastEquipDeep);
+							arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrGunConnect.setLength(jointLength);
 							lastEquipDeep += jointLength;
-							arrGunConnect.setToDeep(lastEquipDeep);
+							arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrGunList.add(arrGunConnect);
 							
 							flag = true;
@@ -517,10 +463,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(equipDTOList.get(0).getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(equipDTOList.get(0).getLength());
 						lastEquipDeep += arrgun.getLength() + endMore; 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -530,10 +476,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 					}
 				} else {
@@ -547,10 +493,10 @@ public class PrePanel extends JPanel {
 					arrgun = new ArrGun();
 					arrgun.setSequence(sp++);
 					arrgun.setEquipmentId(equipDTOList.get(0).getId());
-					arrgun.setFromDeep(lastEquipDeep);
+					arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 					arrgun.setLength(equipDTOList.get(0).getLength());
 					lastEquipDeep += arrgun.getLength() + endMore; 
-					arrgun.setToDeep(lastEquipDeep);
+					arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 					arrgun.setType(GUNConstants.ARR_GUN_FULL);
 					arrGunList.add(arrgun);
 					arrGunMap.put(p++,arrgun);
@@ -560,10 +506,10 @@ public class PrePanel extends JPanel {
 					arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 					arrGunConnect.setSequence(sp++);
 					arrGunConnect.setEquipmentId(jointFormDto.getId());
-					arrGunConnect.setFromDeep(lastEquipDeep);
+					arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 					arrGunConnect.setLength(jointLength);
 					lastEquipDeep += jointLength;
-					arrGunConnect.setToDeep(lastEquipDeep);
+					arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 					arrGunList.add(arrGunConnect);
 				}
 				// y>0代表选t根equipDTOList.get(0)，剩余长度选一根排除两边单边盲区最合适的，若没有再选排除一边单边盲区最合适的，若没有再用y
@@ -575,10 +521,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(equipDTOList.get(m).getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(equipDTOList.get(m).getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						if(g==(y+equipDTOList.get(0).getSingleBlindArea()-PER_MODIFY_LENGTH)){
 							arrgun.setType(GUNConstants.ARR_GUN_FULL);
 						} else {
@@ -592,10 +538,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 						
 						flag = true;
@@ -610,10 +556,10 @@ public class PrePanel extends JPanel {
 					arrgun = new ArrGun();
 					arrgun.setSequence(sp++);
 					arrgun.setEquipmentId(equipDTOList.get(0).getId());
-					arrgun.setFromDeep(lastEquipDeep);
+					arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 					arrgun.setLength(equipDTOList.get(0).getLength());
 					lastEquipDeep += arrgun.getLength(); 
-					arrgun.setToDeep(lastEquipDeep);
+					arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 					if(endMore <= equipDTOList.get(0).getSingleBlindArea()){
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 					} else {
@@ -627,10 +573,10 @@ public class PrePanel extends JPanel {
 					arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 					arrGunConnect.setSequence(sp++);
 					arrGunConnect.setEquipmentId(jointFormDto.getId());
-					arrGunConnect.setFromDeep(lastEquipDeep);
+					arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 					arrGunConnect.setLength(jointLength);
 					lastEquipDeep += jointLength;
-					arrGunConnect.setToDeep(lastEquipDeep);
+					arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 					arrGunList.add(arrGunConnect);
 				} else {
 					flag = false; // flag 归位
@@ -672,10 +618,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(equipDTOList.get(0).getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(equipDTOList.get(0).getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -684,10 +630,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 					}
 				} else if(lgqLeft <= maxLeftLength){
@@ -697,10 +643,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(equipDTOList.get(0).getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(equipDTOList.get(0).getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -709,10 +655,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 					}
 				} else {
@@ -751,10 +697,10 @@ public class PrePanel extends JPanel {
 														arrgun = new ArrGun();
 														arrgun.setSequence(sp++);
 														arrgun.setEquipmentId(equipDTOList.get(0).getId());
-														arrgun.setFromDeep(lastEquipDeep);
+														arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrgun.setLength(equipDTOList.get(0).getLength());
 														lastEquipDeep += arrgun.getLength(); 
-														arrgun.setToDeep(lastEquipDeep);
+														arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 														arrGunList.add(arrgun);
 														arrGunMap.put(p++,arrgun);
@@ -763,10 +709,10 @@ public class PrePanel extends JPanel {
 														arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 														arrGunConnect.setSequence(sp++);
 														arrGunConnect.setEquipmentId(jointFormDto.getId());
-														arrGunConnect.setFromDeep(lastEquipDeep);
+														arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrGunConnect.setLength(jointLength);
 														lastEquipDeep += jointLength;
-														arrGunConnect.setToDeep(lastEquipDeep);
+														arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrGunList.add(arrGunConnect);
 													}
 												}
@@ -775,10 +721,10 @@ public class PrePanel extends JPanel {
 													arrgun = new ArrGun();
 													arrgun.setSequence(sp++);
 													arrgun.setEquipmentId(equipDTOList.get(tp).getId());
-													arrgun.setFromDeep(lastEquipDeep);
+													arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrgun.setLength(equipDTOList.get(tp).getLength());
 													lastEquipDeep += arrgun.getLength(); 
-													arrgun.setToDeep(lastEquipDeep);
+													arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 													arrGunList.add(arrgun);
 													arrGunMap.put(p++,arrgun);
@@ -787,10 +733,10 @@ public class PrePanel extends JPanel {
 													arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 													arrGunConnect.setSequence(sp++);
 													arrGunConnect.setEquipmentId(jointFormDto.getId());
-													arrGunConnect.setFromDeep(lastEquipDeep);
+													arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrGunConnect.setLength(jointLength);
 													lastEquipDeep += jointLength;
-													arrGunConnect.setToDeep(lastEquipDeep);
+													arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrGunList.add(arrGunConnect);
 												}
 												
@@ -805,10 +751,10 @@ public class PrePanel extends JPanel {
 														arrgun = new ArrGun();
 														arrgun.setSequence(sp++);
 														arrgun.setEquipmentId(equipDTOList.get(0).getId());
-														arrgun.setFromDeep(lastEquipDeep);
+														arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrgun.setLength(equipDTOList.get(0).getLength());
 														lastEquipDeep += arrgun.getLength(); 
-														arrgun.setToDeep(lastEquipDeep);
+														arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 														arrGunList.add(arrgun);
 														arrGunMap.put(p++,arrgun);
@@ -817,10 +763,10 @@ public class PrePanel extends JPanel {
 														arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 														arrGunConnect.setSequence(sp++);
 														arrGunConnect.setEquipmentId(jointFormDto.getId());
-														arrGunConnect.setFromDeep(lastEquipDeep);
+														arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrGunConnect.setLength(jointLength);
 														lastEquipDeep += jointLength;
-														arrGunConnect.setToDeep(lastEquipDeep);
+														arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 														arrGunList.add(arrGunConnect);
 													}
 												}
@@ -829,10 +775,10 @@ public class PrePanel extends JPanel {
 													arrgun = new ArrGun();
 													arrgun.setSequence(sp++);
 													arrgun.setEquipmentId(equipDTOList.get(tp).getId());
-													arrgun.setFromDeep(lastEquipDeep);
+													arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrgun.setLength(equipDTOList.get(tp).getLength());
 													lastEquipDeep += arrgun.getLength(); 
-													arrgun.setToDeep(lastEquipDeep);
+													arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 													arrGunList.add(arrgun);
 													arrGunMap.put(p++,arrgun);
@@ -841,10 +787,10 @@ public class PrePanel extends JPanel {
 													arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 													arrGunConnect.setSequence(sp++);
 													arrGunConnect.setEquipmentId(jointFormDto.getId());
-													arrGunConnect.setFromDeep(lastEquipDeep);
+													arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrGunConnect.setLength(jointLength);
 													lastEquipDeep += jointLength;
-													arrGunConnect.setToDeep(lastEquipDeep);
+													arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 													arrGunList.add(arrGunConnect);
 												}
 												
@@ -890,10 +836,10 @@ public class PrePanel extends JPanel {
 												arrgun = new ArrGun();
 												arrgun.setSequence(sp++);
 												arrgun.setEquipmentId(equipDTOList.get(tp).getId());
-												arrgun.setFromDeep(lastEquipDeep);
+												arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setLength(equipDTOList.get(tp).getLength());
 												lastEquipDeep += arrgun.getLength(); 
-												arrgun.setToDeep(lastEquipDeep);
+												arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 												arrGunList.add(arrgun);
 												arrGunMap.put(p++,arrgun);
@@ -902,10 +848,10 @@ public class PrePanel extends JPanel {
 												arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 												arrGunConnect.setSequence(sp++);
 												arrGunConnect.setEquipmentId(jointFormDto.getId());
-												arrGunConnect.setFromDeep(lastEquipDeep);
+												arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunConnect.setLength(jointLength);
 												lastEquipDeep += jointLength;
-												arrGunConnect.setToDeep(lastEquipDeep);
+												arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunList.add(arrGunConnect);
 											}
 											
@@ -919,10 +865,10 @@ public class PrePanel extends JPanel {
 												arrgun = new ArrGun();
 												arrgun.setSequence(sp++);
 												arrgun.setEquipmentId(equipDTOList.get(tp).getId());
-												arrgun.setFromDeep(lastEquipDeep);
+												arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setLength(equipDTOList.get(tp).getLength());
 												lastEquipDeep += arrgun.getLength(); 
-												arrgun.setToDeep(lastEquipDeep);
+												arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 												arrGunList.add(arrgun);
 												arrGunMap.put(p++,arrgun);
@@ -931,10 +877,10 @@ public class PrePanel extends JPanel {
 												arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 												arrGunConnect.setSequence(sp++);
 												arrGunConnect.setEquipmentId(jointFormDto.getId());
-												arrGunConnect.setFromDeep(lastEquipDeep);
+												arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunConnect.setLength(jointLength);
 												lastEquipDeep += jointLength;
-												arrGunConnect.setToDeep(lastEquipDeep);
+												arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunList.add(arrGunConnect);
 											}
 											
@@ -961,10 +907,10 @@ public class PrePanel extends JPanel {
 							arrgun = new ArrGun();
 							arrgun.setSequence(sp++);
 							arrgun.setEquipmentId(equipDTOList.get(0).getId());
-							arrgun.setFromDeep(lastEquipDeep);
+							arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrgun.setLength(equipDTOList.get(0).getLength());
 							lastEquipDeep += arrgun.getLength(); 
-							arrgun.setToDeep(lastEquipDeep);
+							arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 							if(c == x){
 								arrgun.setType(GUNConstants.ARR_GUN_UP_EMPTY);
 							} else {
@@ -977,10 +923,10 @@ public class PrePanel extends JPanel {
 							arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 							arrGunConnect.setSequence(sp++);
 							arrGunConnect.setEquipmentId(jointFormDto.getId());
-							arrGunConnect.setFromDeep(lastEquipDeep);
+							arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrGunConnect.setLength(jointLength);
 							lastEquipDeep += jointLength;
-							arrGunConnect.setToDeep(lastEquipDeep);
+							arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 							arrGunList.add(arrGunConnect);
 						}
 					} else {
@@ -1009,10 +955,10 @@ public class PrePanel extends JPanel {
 												arrgun = new ArrGun();
 												arrgun.setSequence(sp++);
 												arrgun.setEquipmentId(equipDTOList.get(0).getId());
-												arrgun.setFromDeep(lastEquipDeep);
+												arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setLength(equipDTOList.get(0).getLength());
 												lastEquipDeep += arrgun.getLength(); 
-												arrgun.setToDeep(lastEquipDeep);
+												arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 												arrGunList.add(arrgun);
 												arrGunMap.put(p++,arrgun);
@@ -1021,10 +967,10 @@ public class PrePanel extends JPanel {
 												arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 												arrGunConnect.setSequence(sp++);
 												arrGunConnect.setEquipmentId(jointFormDto.getId());
-												arrGunConnect.setFromDeep(lastEquipDeep);
+												arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunConnect.setLength(jointLength);
 												lastEquipDeep += jointLength;
-												arrGunConnect.setToDeep(lastEquipDeep);
+												arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunList.add(arrGunConnect);
 											}
 											for(int t1 = 0;t1<temp.length;t1++){
@@ -1032,10 +978,10 @@ public class PrePanel extends JPanel {
 												arrgun = new ArrGun();
 												arrgun.setSequence(sp++);
 												arrgun.setEquipmentId(equipDTOList.get(tp).getId());
-												arrgun.setFromDeep(lastEquipDeep);
+												arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setLength(equipDTOList.get(tp).getLength());
 												lastEquipDeep += arrgun.getLength(); 
-												arrgun.setToDeep(lastEquipDeep);
+												arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 												arrGunList.add(arrgun);
 												arrGunMap.put(p++,arrgun);
@@ -1044,10 +990,10 @@ public class PrePanel extends JPanel {
 												arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 												arrGunConnect.setSequence(sp++);
 												arrGunConnect.setEquipmentId(jointFormDto.getId());
-												arrGunConnect.setFromDeep(lastEquipDeep);
+												arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunConnect.setLength(jointLength);
 												lastEquipDeep += jointLength;
-												arrGunConnect.setToDeep(lastEquipDeep);
+												arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 												arrGunList.add(arrGunConnect);
 											}
 											break a;
@@ -1064,10 +1010,10 @@ public class PrePanel extends JPanel {
 								arrgun = new ArrGun();
 								arrgun.setSequence(sp++);
 								arrgun.setEquipmentId(equipDTOList.get(0).getId());
-								arrgun.setFromDeep(lastEquipDeep);
+								arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setLength(equipDTOList.get(0).getLength());
 								lastEquipDeep += arrgun.getLength(); 
-								arrgun.setToDeep(lastEquipDeep);
+								arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setType(GUNConstants.ARR_GUN_SPACER);
 								arrGunList.add(arrgun);
 								arrGunMap.put(p++,arrgun);
@@ -1076,10 +1022,10 @@ public class PrePanel extends JPanel {
 								arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 								arrGunConnect.setSequence(sp++);
 								arrGunConnect.setEquipmentId(jointFormDto.getId());
-								arrGunConnect.setFromDeep(lastEquipDeep);
+								arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunConnect.setLength(jointLength);
 								lastEquipDeep += jointLength;
-								arrGunConnect.setToDeep(lastEquipDeep);
+								arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunList.add(arrGunConnect);
 							}
 						}
@@ -1095,10 +1041,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(equipmentFormDTO.getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(equipmentFormDTO.getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -1107,10 +1053,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 					}
 					// 可以用最优来排
@@ -1119,10 +1065,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(reminderGun.getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(reminderGun.getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -1131,20 +1077,20 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 					} else if(maxLeftlgtFlag){
 						EquipmentFormDTO reminderGun = equipDTOList.get(0);
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(reminderGun.getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(reminderGun.getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -1153,10 +1099,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 					}
 				} else {
@@ -1167,10 +1113,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(equipDTOList.get(0).getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(equipDTOList.get(0).getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -1179,10 +1125,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 					}
 					double t2 = arrDeep%(equipDTOList.get(0).getLength() + jointLength);
@@ -1191,10 +1137,10 @@ public class PrePanel extends JPanel {
 						arrgun = new ArrGun();
 						arrgun.setSequence(sp++);
 						arrgun.setEquipmentId(equipDTOList.get(equipDTOList.size()-1).getId());
-						arrgun.setFromDeep(lastEquipDeep);
+						arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setLength(equipDTOList.get(equipDTOList.size()-1).getLength());
 						lastEquipDeep += arrgun.getLength(); 
-						arrgun.setToDeep(lastEquipDeep);
+						arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrgun.setType(GUNConstants.ARR_GUN_FULL);
 						arrGunList.add(arrgun);
 						arrGunMap.put(p++,arrgun);
@@ -1203,10 +1149,10 @@ public class PrePanel extends JPanel {
 						arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 						arrGunConnect.setSequence(sp++);
 						arrGunConnect.setEquipmentId(jointFormDto.getId());
-						arrGunConnect.setFromDeep(lastEquipDeep);
+						arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunConnect.setLength(jointLength);
 						lastEquipDeep += jointLength;
-						arrGunConnect.setToDeep(lastEquipDeep);
+						arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 						arrGunList.add(arrGunConnect);
 						
 						double s = equipDTOList.get(equipDTOList.size()-1).getLength();
@@ -1217,10 +1163,10 @@ public class PrePanel extends JPanel {
 								arrgun = new ArrGun();
 								arrgun.setSequence(sp++);
 								arrgun.setEquipmentId(equipDTOList.get(temp1).getId());
-								arrgun.setFromDeep(lastEquipDeep);
+								arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setLength(equipDTOList.get(temp1).getLength());
 								lastEquipDeep += arrgun.getLength(); 
-								arrgun.setToDeep(lastEquipDeep);
+								arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setType(GUNConstants.ARR_GUN_DOWN_EMPTY);
 								arrGunList.add(arrgun);
 								arrGunMap.put(p++,arrgun);
@@ -1229,10 +1175,10 @@ public class PrePanel extends JPanel {
 								arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 								arrGunConnect.setSequence(sp++);
 								arrGunConnect.setEquipmentId(jointFormDto.getId());
-								arrGunConnect.setFromDeep(lastEquipDeep);
+								arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunConnect.setLength(jointLength);
 								lastEquipDeep += jointLength;
-								arrGunConnect.setToDeep(lastEquipDeep);
+								arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunList.add(arrGunConnect);
 								break;
 							}
@@ -1245,10 +1191,10 @@ public class PrePanel extends JPanel {
 								arrgun = new ArrGun();
 								arrgun.setSequence(sp++);
 								arrgun.setEquipmentId(equipDTOList.get(temp1).getId());
-								arrgun.setFromDeep(lastEquipDeep);
+								arrgun.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setLength(equipDTOList.get(temp1).getLength());
 								lastEquipDeep += arrgun.getLength(); 
-								arrgun.setToDeep(lastEquipDeep);
+								arrgun.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrgun.setType(GUNConstants.ARR_GUN_DOWN_EMPTY);
 								arrGunList.add(arrgun);
 								arrGunMap.put(p++,arrgun);
@@ -1257,10 +1203,10 @@ public class PrePanel extends JPanel {
 								arrGunConnect.setType(GUNConstants.ARR_GUN_CONNECTOR);
 								arrGunConnect.setSequence(sp++);
 								arrGunConnect.setEquipmentId(jointFormDto.getId());
-								arrGunConnect.setFromDeep(lastEquipDeep);
+								arrGunConnect.setFromDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunConnect.setLength(jointLength);
 								lastEquipDeep += jointLength;
-								arrGunConnect.setToDeep(lastEquipDeep);
+								arrGunConnect.setToDeep(Double.valueOf(df.format(lastEquipDeep)));
 								arrGunList.add(arrGunConnect);
 								break;
 							}
@@ -1275,19 +1221,6 @@ public class PrePanel extends JPanel {
 			if(f%10 == 0){
 				System.out.println("Sequence  EquipmentId  FromDeep    Length   ToDeep    Type");
 			}
-			System.out.print(ag.getSequence() + "         ");
-			System.out.print(ag.getEquipmentId() + "          ");
-			System.out.print(ag.getFromDeep() + "         ");
-			System.out.print(ag.getLength() + "        ");
-			System.out.print(ag.getToDeep() + "         ");
-			System.out.println(ag.getType());
-		}
-		
-		for(int f=1;f<=arrGunMap.size();f++){
-			if(f%10 == 0){
-				System.out.println("Sequence  EquipmentId  FromDeep    Length   ToDeep    Type");
-			}
-			ArrGun ag = arrGunMap.get(f);
 			System.out.print(ag.getSequence() + "         ");
 			System.out.print(ag.getEquipmentId() + "          ");
 			System.out.print(ag.getFromDeep() + "         ");

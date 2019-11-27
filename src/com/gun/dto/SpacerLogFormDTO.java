@@ -3,10 +3,6 @@ package com.gun.dto;
 import java.sql.Timestamp;
 
 public class SpacerLogFormDTO {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	public static enum ATTRIBUTE {
 	    ID("id"),
